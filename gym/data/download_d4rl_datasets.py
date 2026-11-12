@@ -1,5 +1,6 @@
 import gym
 import numpy as np
+import os
 
 import collections
 import pickle
@@ -9,8 +10,8 @@ import d4rl
 
 datasets = []
 
-for env_name in ['halfcheetah', 'hopper', 'walker2d']:
-	for dataset_type in ['medium', 'medium-replay', 'expert']:
+for env_name in ['halfcheetah', 'hopper', 'ant']:	# replacing our environments
+	for dataset_type in ['medium-replay']:			# replacing our dataset
 		name = f'{env_name}-{dataset_type}-v2'
 		env = gym.make(name)
 		dataset = env.get_dataset()
@@ -46,5 +47,6 @@ for env_name in ['halfcheetah', 'hopper', 'walker2d']:
 		print(f'Number of samples collected: {num_samples}')
 		print(f'Trajectory returns: mean = {np.mean(returns)}, std = {np.std(returns)}, max = {np.max(returns)}, min = {np.min(returns)}')
 
-		with open(f'{name}.pkl', 'wb') as f:
+		os.makedirs('data', exist_ok=True)
+		with open(f'data/{name}.pkl', 'wb') as f:
 			pickle.dump(paths, f)
