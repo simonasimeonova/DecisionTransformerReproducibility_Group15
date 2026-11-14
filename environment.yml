@@ -9,7 +9,7 @@ dependencies:
   - python=3.8.5
   - cudatoolkit=10.0
   - numpy=1.20.3
-  - pip
+  - pip=24.0
   - setuptools=65.5.0
   - pip:
       - gym==0.18.3
