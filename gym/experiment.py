@@ -2,6 +2,7 @@ import gym
 import numpy as np
 import torch
 import wandb
+import os
 
 import argparse
 import pickle
@@ -30,6 +31,14 @@ def experiment(
     device = variant.get('device', 'cuda')
     log_to_wandb = variant.get('log_to_wandb', False)
 
+    # adding seeds
+    seed = variant.get('seed', 42)
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
     env_name, dataset = variant['env'], variant['dataset']
     model_type = variant['model_type']
     group_name = f'{exp_prefix}-{env_name}-{dataset}'
@@ -49,6 +58,11 @@ def experiment(
         env = gym.make('Walker2d-v3')
         max_ep_len = 1000
         env_targets = [5000, 2500]
+        scale = 1000.
+    elif env_name == 'ant': # adding Ant support
+        env = gym.make('Ant-v3')
+        max_ep_len = 1000
+        env_targets = []  # TODO: set after inspecting dataset returns
         scale = 1000.
     elif env_name == 'reacher2d':
         from decision_transformer.envs.reacher_2d import Reacher2dEnv
@@ -279,6 +293,10 @@ def experiment(
         if log_to_wandb:
             wandb.log(outputs)
 
+    # adding checkpoint saving of the final model
+    os.makedirs('checkpoints', exist_ok=True)
+    torch.save(trainer.model.state_dict(), f"checkpoints/{env_name}_{dataset}_K{K}_seed{seed}.pt")
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -286,6 +304,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='medium')  # medium, medium-replay, medium-expert, expert
     parser.add_argument('--mode', type=str, default='normal')  # normal for standard setting, delayed for sparse
     parser.add_argument('--K', type=int, default=20)
+    parser.add_argument('--seed', type=int, default=42) # adding an argument for launching with different seeds
     parser.add_argument('--pct_traj', type=float, default=1.)
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--model_type', type=str, default='dt')  # dt for decision transformer, bc for behavior cloning
