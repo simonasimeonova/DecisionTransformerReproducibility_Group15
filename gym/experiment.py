@@ -62,7 +62,7 @@ def experiment(
     elif env_name == 'ant': # adding Ant support
         env = gym.make('Ant-v3')
         max_ep_len = 1000
-        env_targets = []  # TODO: set after inspecting dataset returns
+        env_targets = [3000, 1500]  # TODO: set after inspecting dataset returns
         scale = 1000.
     elif env_name == 'reacher2d':
         from decision_transformer.envs.reacher_2d import Reacher2dEnv
@@ -72,6 +72,9 @@ def experiment(
         scale = 10.
     else:
         raise NotImplementedError
+
+    env.seed(seed)
+    env.action_space.seed(seed)
 
     if model_type == 'bc':
         env_targets = env_targets[:1]  # since BC ignores target, no need for different evaluations
@@ -294,8 +297,10 @@ def experiment(
             wandb.log(outputs)
 
     # adding checkpoint saving of the final model
-    os.makedirs('checkpoints', exist_ok=True)
-    torch.save(trainer.model.state_dict(), f"checkpoints/{env_name}_{dataset}_K{K}_seed{seed}.pt")
+    os.makedirs("checkpoints", exist_ok=True)
+    checkpoint_path = f"checkpoints/{env_name}_{dataset}_K{K}_seed{seed}.pt"
+    torch.save(trainer.model.state_dict(), checkpoint_path)
+    print(f"Saved checkpoint: {checkpoint_path}")
 
 
 if __name__ == '__main__':
