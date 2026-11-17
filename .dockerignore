@@ -1,0 +1,14 @@
+.git
+.runtime
+.venv
+**/__pycache__
+**/*.pyc
+**/*.pkl
+**/*.hdf5
+**/*.pt
+**/checkpoints
+**/logs
+**/wandb
+results
+atari
+.DS_Store
