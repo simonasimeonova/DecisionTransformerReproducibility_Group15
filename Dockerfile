@@ -40,7 +40,8 @@ RUN python -m pip install --no-cache-dir \
 RUN python -m pip install --no-cache-dir torch==1.8.1+cu111 \
       -f https://download.pytorch.org/whl/torch_stable.html \
     && python -m pip install --no-cache-dir \
-      transformers==4.5.1 wandb==0.9.1 click==7.1.2 protobuf==3.20.3 h5py==3.7.0
+      transformers==4.5.1 packaging==21.3 \
+      wandb==0.9.1 click==7.1.2 protobuf==3.20.3 h5py==3.7.0
 
 ARG SOURCE_COMMIT=unknown
 RUN printf '%s\n' "$SOURCE_COMMIT" > /opt/source-commit.txt
