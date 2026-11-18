@@ -1,4 +1,4 @@
-# Ant K=1 seed=3 on Renku Jobs
+# Ant K=1 (default seed=42) on Renku Jobs
 
 The Dockerfile includes MuJoCo 2.0, its public legacy activation key, system
 OpenGL/OSMesa libraries, Python 3.8, Gym 0.18.3, mujoco-py 2.0.2.13,
@@ -21,7 +21,7 @@ You need repository permissions to run Actions and publish packages.
 For the current repository, the image will be:
 
 ```text
-ghcr.io/simonasimeonova/decisiontransformerreproducibility_group15:ant-k1-seed3
+ghcr.io/simonasimeonova/decisiontransformerreproducibility_group15:ant-k1
 ```
 
 After a successful build, open the GitHub account/organization's Packages page,
@@ -31,7 +31,7 @@ does not automatically make a newly published GHCR package public. If the image
 must stay private, configure registry credentials in Renku instead.
 
 For a reproducible run, use the commit SHA image tag from the workflow instead
-of the mutable ant-k1-seed3 tag. The code baked into that image is what runs;
+of the mutable ant-k1 tag. The code baked into that image is what runs;
 editing a linked Renku repository does not change it.
 
 ## 2. Renku Job Launcher
@@ -69,12 +69,12 @@ at `datasets/ant_medium_replay-v2.hdf5`, or supply the already prepared
 `datasets/ant-medium-replay-v2.pkl` from your group's trusted source. Do not
 substitute AntMaze, another dataset version, or another environment.
 
-Outputs are in `/home/renku/work/results/ant_K1_seed3_<time>_<unique>/`:
+Outputs are in `/home/renku/work/results/ant_K1_seed42_<time>_<unique>/`:
 
 - `train.log`: training progress and integrated evaluation results.
 - `arguments.json`, `packages.txt`, `source-commit.txt`, `experiment-source.py`:
   configuration, installed versions and code provenance.
-- `checkpoints/ant_medium-replay_K1_seed3.pt`: final model weights.
+- `checkpoints/ant_medium-replay_K1_seed42.pt`: final model weights.
 
 The existing training script saves only at the END and has no resume support.
 A stopped/preempted Job loses unfinished training progress. Ant target returns
@@ -102,3 +102,25 @@ docker run --rm --gpus all \
   /usr/local/bin/train-ant \
   --max_iters 1 --num_steps_per_iter 20 --num_eval_episodes 1
 ```
+
+## Persistent output launcher (recommended)
+
+The old `ant-k1-seed3` image hard-coded seed 3. Rebuild and use the new
+`ant-k1` tag (or its new commit SHA tag). The fixed launcher defaults to the
+training code's seed 42 and accepts explicit `--seed` overrides. The repository
+does not prescribe a list of three seeds; agree that list with the K=20 runs.
+
+For the first full run:
+
+- Command: `["/usr/local/bin/train-ant-persistent"]`
+- Arguments: `["--seed", "42", "--max_iters", "10", "--num_steps_per_iter", "10000", "--num_eval_episodes", "100"]`
+
+The persistent wrapper checks the existing Connector mount at
+`/home/renku/work/DecisionTransformerReproducibility_Group15/training-storage`,
+trains locally, archives the model/configuration/logs to that mount, logs disk
+usage and archive size, and waits 300 seconds before exiting. The archive name
+contains the actual seed. Check SWITCHdrive directly and download the archive;
+mount readback and a delay cannot prove remote upload completed. Override the
+mount path with `DT_OUTPUT_DIR` and the wait with `DT_UPLOAD_WAIT_SECONDS` if
+needed. Outputs are copied only after the training process exits; interruption
+can still lose unfinished progress.

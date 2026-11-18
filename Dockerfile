@@ -48,8 +48,9 @@ RUN printf '%s\n' "$SOURCE_COMMIT" > /opt/source-commit.txt
 COPY gym /opt/decision-transformer/gym
 COPY docker/prepare_ant.py /opt/decision-transformer/prepare_ant.py
 COPY docker/train-ant.sh /usr/local/bin/train-ant
+COPY docker/train-ant-persistent.sh /usr/local/bin/train-ant-persistent
 COPY docker/smoke.py /opt/decision-transformer/smoke.py
-RUN chmod 755 /usr/local/bin/train-ant \
+RUN chmod 755 /usr/local/bin/train-ant /usr/local/bin/train-ant-persistent \
     && python -m pip check \
     && python /opt/decision-transformer/smoke.py \
     && chmod -R a+rwX /usr/local/lib/python3.8/site-packages/mujoco_py/generated

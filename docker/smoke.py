@@ -10,7 +10,7 @@ from decision_transformer.models.decision_transformer import DecisionTransformer
 
 env = gym.make("Ant-v3")
 try:
-    env.seed(3)
+    env.seed(42)
     obs = env.reset()
     obs, reward, done, info = env.step(env.action_space.sample())
     model = DecisionTransformer(

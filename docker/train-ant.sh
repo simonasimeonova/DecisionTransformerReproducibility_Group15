@@ -2,10 +2,23 @@
 set -euo pipefail
 unset PYTHONHOME PYTHONPATH
 
+# Keep the training code's default seed (42); explicit --seed overrides it.
+# Environment/model/context remain fixed for member C.
+args=(--max_iters 10 --num_steps_per_iter 10000 --num_eval_episodes 100
+      "$@" --env ant --dataset medium-replay --model_type dt --K 1 --device cuda)
+seed=$(python - "${args[@]}" <<'PY'
+import argparse
+import sys
+parser = argparse.ArgumentParser(add_help=False)
+parser.add_argument('--seed', type=int, default=42)
+parsed, _ = parser.parse_known_args(sys.argv[1:])
+print(parsed.seed)
+PY
+)
 work_dir="${DT_WORK_DIR:-/home/renku/work}"
 data_dir="${DT_DATA_DIR:-$work_dir/datasets}"
 mkdir -p "$work_dir/results" "$data_dir"
-run_dir="$(mktemp -d "$work_dir/results/ant_K1_seed3_$(date -u +%Y%m%dT%H%M%SZ)_XXXXXX")"
+run_dir="$(mktemp -d "$work_dir/results/ant_K1_seed${seed}_$(date -u +%Y%m%dT%H%M%SZ)_XXXXXX")"
 cd "$run_dir"
 exec > >(tee -a train.log) 2>&1
 echo "Output directory: $run_dir"
@@ -24,10 +37,6 @@ python -m pip freeze > packages.txt
 cp /opt/source-commit.txt source-commit.txt
 cp /opt/decision-transformer/gym/experiment.py experiment-source.py
 
-# Optional args override only the budget/evaluation defaults; environment,
-# model, K and seed stay fixed for C's run.
-args=(--max_iters 10 --num_steps_per_iter 10000 --num_eval_episodes 100
-      "$@" --env ant --dataset medium-replay --model_type dt --K 1 --seed 3 --device cuda)
 python - "${args[@]}" <<'PY'
 import json
 import sys
