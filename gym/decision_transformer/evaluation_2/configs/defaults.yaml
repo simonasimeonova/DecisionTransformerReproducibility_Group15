@@ -1,0 +1,16 @@
+# Fill in evaluation episode seeds before running.
+evaluation:
+  episode_seeds: []
+  max_episode_steps: 1000
+  device: cpu
+
+# Must match training. These are experiment.py's default DT settings.
+model:
+  embed_dim: 128
+  n_layer: 3
+  n_head: 1
+  activation_function: relu
+  dropout: 0.1
+  max_ep_len: 1000
+  scale: 1000.0
+  mode: normal

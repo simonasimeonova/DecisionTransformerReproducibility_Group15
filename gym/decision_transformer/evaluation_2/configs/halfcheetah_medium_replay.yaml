@@ -1,0 +1,27 @@
+experiment_id: halfcheetah_medium_replay
+environment: halfcheetah
+env_id: HalfCheetah-v3  # Matches the current training code; do not change only for evaluation.
+dataset: medium-replay-v2
+dataset_path: ../../../data/halfcheetah-medium-replay-v2.pkl
+
+# Paths are relative to this YAML. Add entries for each trained seed.
+# Set the actual training seed and checkpoint path when available.
+checkpoints:
+  k1:
+    path: null
+    K: 1
+    training_seed: null
+  k20:
+    path: null
+    K: 20
+    training_seed: null
+
+return_conditioning:
+  enabled: true
+  checkpoints: [k20]
+  targets: []  # Raw returns: choose a range using the dataset analysis.
+
+context_comparison:
+  enabled: true
+  checkpoints: [k1, k20]
+  targets: []  # Identical targets for both K values; choose before final evaluation.
