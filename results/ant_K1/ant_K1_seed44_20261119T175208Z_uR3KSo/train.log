@@ -1,0 +1,172 @@
+Output directory: /home/renku/work/task3-local-3IjnOh/results/ant_K1_seed44_20261119T175208Z_uR3KSo
+PyTorch: 1.8.1+cu111 CUDA build: 11.1
+GPU: NVIDIA A100 80GB PCIe MIG 2g.20gb matrix check: -9.814224243164062
+Downloading https://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco_v2/ant_medium_replay-v2.hdf5
+Saved /home/renku/work/task3-local-3IjnOh/datasets/ant-medium-replay-v2.pkl trajectories: 485 return mean/max: 976.0524 3734.8838
+==================================================
+Starting new experiment: ant medium-replay
+485 trajectories, 302000 timesteps found
+Average return: 976.05, std: 1005.71
+Max return: 3734.88, min: -698.47
+==================================================
+================================================================================
+Iteration 1
+time/training: 1223.5476558208466
+evaluation/target_3000_return_mean: 897.4207560666079
+evaluation/target_3000_return_std: 128.85731019228407
+evaluation/target_3000_length_mean: 995.0
+evaluation/target_3000_length_std: 49.749371855331
+evaluation/target_1500_return_mean: 1037.835773360909
+evaluation/target_1500_return_std: 260.4078222786061
+evaluation/target_1500_length_mean: 991.4
+evaluation/target_1500_length_std: 67.44286470783993
+time/total: 1930.7015371322632
+time/evaluation: 707.1538758277893
+training/train_loss_mean: 0.12835850810520352
+training/train_loss_std: 0.07451753536774547
+training/action_error: 0.08528275787830353
+================================================================================
+Iteration 2
+time/training: 1199.437445640564
+evaluation/target_3000_return_mean: 2628.263070299192
+evaluation/target_3000_return_std: 770.7860363269859
+evaluation/target_3000_length_mean: 908.35
+evaluation/target_3000_length_std: 228.63575289092475
+evaluation/target_1500_return_mean: 1538.5749988019004
+evaluation/target_1500_return_std: 612.6897718945131
+evaluation/target_1500_length_mean: 953.08
+evaluation/target_1500_length_std: 176.5168365907343
+time/total: 3774.2831015586853
+time/evaluation: 644.1429641246796
+training/train_loss_mean: 0.07423198667243124
+training/train_loss_std: 0.012351183283473692
+training/action_error: 0.058329254388809204
+================================================================================
+Iteration 3
+time/training: 1197.0388360023499
+evaluation/target_3000_return_mean: 2976.6957576356845
+evaluation/target_3000_return_std: 742.0207996869945
+evaluation/target_3000_length_mean: 930.01
+evaluation/target_3000_length_std: 194.98915328807394
+evaluation/target_1500_return_mean: 2268.7325985631082
+evaluation/target_1500_return_std: 670.4772967914826
+evaluation/target_1500_length_mean: 922.75
+evaluation/target_1500_length_std: 208.2050131480988
+time/total: 5607.980909585953
+time/evaluation: 636.6577942371368
+training/train_loss_mean: 0.06559013231880963
+training/train_loss_std: 0.011369357450284457
+training/action_error: 0.06610003113746643
+================================================================================
+Iteration 4
+time/training: 1194.5407662391663
+evaluation/target_3000_return_mean: 3043.3692690066027
+evaluation/target_3000_return_std: 827.9775123755785
+evaluation/target_3000_length_mean: 929.67
+evaluation/target_3000_length_std: 203.19409710914343
+evaluation/target_1500_return_mean: 2372.3813858851877
+evaluation/target_1500_return_std: 932.3084360486971
+evaluation/target_1500_length_mean: 913.77
+evaluation/target_1500_length_std: 229.88370342414444
+time/total: 7443.294488668442
+time/evaluation: 640.771657705307
+training/train_loss_mean: 0.06176142393164337
+training/train_loss_std: 0.011035428194173549
+training/action_error: 0.08313064277172089
+================================================================================
+Iteration 5
+time/training: 1187.9949643611908
+evaluation/target_3000_return_mean: 3144.0303634768284
+evaluation/target_3000_return_std: 727.8802979852818
+evaluation/target_3000_length_mean: 935.41
+evaluation/target_3000_length_std: 200.34600545057046
+evaluation/target_1500_return_mean: 2552.8270553327275
+evaluation/target_1500_return_std: 841.2575858579354
+evaluation/target_1500_length_mean: 931.48
+evaluation/target_1500_length_std: 193.92867142328387
+time/total: 9274.519182682037
+time/evaluation: 643.2287137508392
+training/train_loss_mean: 0.05925321980100125
+training/train_loss_std: 0.010638608667879789
+training/action_error: 0.05487693101167679
+================================================================================
+Iteration 6
+time/training: 1187.2847473621368
+evaluation/target_3000_return_mean: 3214.1829048679992
+evaluation/target_3000_return_std: 486.03735934589315
+evaluation/target_3000_length_mean: 978.93
+evaluation/target_3000_length_std: 112.18852481426073
+evaluation/target_1500_return_mean: 2783.211040528387
+evaluation/target_1500_return_std: 832.5937904726659
+evaluation/target_1500_length_mean: 973.88
+evaluation/target_1500_length_std: 133.40984071649288
+time/total: 11133.60757446289
+time/evaluation: 671.8024544715881
+training/train_loss_mean: 0.057510234851576386
+training/train_loss_std: 0.010390498452119604
+training/action_error: 0.05576445907354355
+================================================================================
+Iteration 7
+time/training: 1186.820717573166
+evaluation/target_3000_return_mean: 3117.10424510147
+evaluation/target_3000_return_std: 832.8284657936289
+evaluation/target_3000_length_mean: 939.26
+evaluation/target_3000_length_std: 187.69361310390934
+evaluation/target_1500_return_mean: 2395.036561142528
+evaluation/target_1500_return_std: 824.3372084515638
+evaluation/target_1500_length_mean: 925.34
+evaluation/target_1500_length_std: 187.00059999903746
+time/total: 12962.210613965988
+time/evaluation: 641.7811172008514
+training/train_loss_mean: 0.05612522049862891
+training/train_loss_std: 0.010146457259255977
+training/action_error: 0.05957645922899246
+================================================================================
+Iteration 8
+time/training: 1195.450276851654
+evaluation/target_3000_return_mean: 3054.827566848376
+evaluation/target_3000_return_std: 861.3709275524087
+evaluation/target_3000_length_mean: 922.92
+evaluation/target_3000_length_std: 215.68308603133434
+evaluation/target_1500_return_mean: 2711.7747818918956
+evaluation/target_1500_return_std: 864.8354197336736
+evaluation/target_1500_length_mean: 928.2
+evaluation/target_1500_length_std: 195.91574719761553
+time/total: 14792.691129922867
+time/evaluation: 635.0290286540985
+training/train_loss_mean: 0.054787005376815794
+training/train_loss_std: 0.00998324111915691
+training/action_error: 0.05448828637599945
+================================================================================
+Iteration 9
+time/training: 1194.4875876903534
+evaluation/target_3000_return_mean: 3194.8139466179073
+evaluation/target_3000_return_std: 725.0809514284681
+evaluation/target_3000_length_mean: 945.8
+evaluation/target_3000_length_std: 181.8341552074307
+evaluation/target_1500_return_mean: 2635.1402962971433
+evaluation/target_1500_return_std: 740.7956554458847
+evaluation/target_1500_length_mean: 946.23
+evaluation/target_1500_length_std: 171.6163077915383
+time/total: 16638.123129606247
+time/evaluation: 650.9432306289673
+training/train_loss_mean: 0.05393408038802445
+training/train_loss_std: 0.00987274916755321
+training/action_error: 0.06132938340306282
+================================================================================
+Iteration 10
+time/training: 1209.070145368576
+evaluation/target_3000_return_mean: 3252.8253064254613
+evaluation/target_3000_return_std: 747.448314935981
+evaluation/target_3000_length_mean: 952.42
+evaluation/target_3000_length_std: 168.48615254673007
+evaluation/target_1500_return_mean: 2553.1152796023157
+evaluation/target_1500_return_std: 872.616858483578
+evaluation/target_1500_length_mean: 918.44
+evaluation/target_1500_length_std: 214.90832091847906
+time/total: 18502.412383556366
+time/evaluation: 655.21794962883
+training/train_loss_mean: 0.052977452392317353
+training/train_loss_std: 0.009622999992964726
+training/action_error: 0.05374019593000412
+Saved checkpoint: checkpoints/ant_medium-replay_K1_seed44.pt
