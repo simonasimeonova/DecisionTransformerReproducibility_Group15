@@ -5,10 +5,18 @@ import torch
 from decision_transformer.models.decision_transformer import DecisionTransformer
 
 
+class NumPyUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        # Datasets saved with NumPy 2 must also load in the NumPy 1 training image.
+        if module.startswith("numpy._core"):
+            module = module.replace("numpy._core", "numpy.core", 1)
+        return super().find_class(module, name)
+
+
 def load_normalization(dataset_path):
     # Match experiment.py: all observations, including when pct_traj < 1.
     with open(dataset_path, "rb") as file:
-        trajectories = pickle.load(file)
+        trajectories = NumPyUnpickler(file).load()
     states = np.concatenate([path["observations"] for path in trajectories], axis=0)
     return states.mean(axis=0), states.std(axis=0) + 1e-6
 
