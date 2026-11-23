@@ -46,10 +46,9 @@ RUN python -m pip install --no-cache-dir torch==1.8.1+cu111 \
 ARG SOURCE_COMMIT=unknown
 RUN printf '%s\n' "$SOURCE_COMMIT" > /opt/source-commit.txt
 COPY gym /opt/decision-transformer/gym
-COPY docker/prepare_ant.py /opt/decision-transformer/prepare_ant.py
-COPY docker/train-ant.sh /usr/local/bin/train-ant
+COPY docker/train.sh /usr/local/bin/train
 COPY docker/smoke.py /opt/decision-transformer/smoke.py
-RUN chmod 755 /usr/local/bin/train-ant \
+RUN chmod 755 /usr/local/bin/train \
     && python -m pip check \
     && python /opt/decision-transformer/smoke.py \
     && chmod -R a+rwX /usr/local/lib/python3.8/site-packages/mujoco_py/generated
@@ -64,4 +63,4 @@ ENV HOME=/home/renku
 USER 1000:1000
 WORKDIR /home/renku/work
 RUN python /opt/decision-transformer/smoke.py
-CMD ["/usr/local/bin/train-ant"]
+CMD ["/usr/local/bin/train"]

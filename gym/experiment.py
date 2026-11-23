@@ -8,12 +8,18 @@ import argparse
 import pickle
 import random
 import sys
-
 from decision_transformer.evaluation.evaluate_episodes import evaluate_episode, evaluate_episode_rtg
 from decision_transformer.models.decision_transformer import DecisionTransformer
 from decision_transformer.models.mlp_bc import MLPBCModel
 from decision_transformer.training.act_trainer import ActTrainer
 from decision_transformer.training.seq_trainer import SequenceTrainer
+
+
+class NumPyUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module.startswith('numpy._core'):
+            module = module.replace('numpy._core', 'numpy.core', 1)
+        return super().find_class(module, name)
 
 
 def discount_cumsum(x, gamma):
@@ -85,7 +91,7 @@ def experiment(
     # load dataset
     dataset_path = f'data/{env_name}-{dataset}-v2.pkl'
     with open(dataset_path, 'rb') as f:
-        trajectories = pickle.load(f)
+        trajectories = NumPyUnpickler(f).load()
 
     # save all path information into separate lists
     mode = variant.get('mode', 'normal')
