@@ -11,7 +11,9 @@ The same image can train any supported environment, dataset, K, or seed.
    ["/usr/local/bin/train", "ant", "medium-replay", "20", "42"]
    ```
 
-   The four values are environment, dataset, K, and training seed. Optional `experiment.py` arguments can follow them.
-4. Select a GPU resource. Each Job trains one model and saves an archive to `training-storage`. The existing evaluation script reads those archives.
+   The four values are environment, dataset, K, and training seed. To train three seeds in one Job, use `"42,43,44"` as the last value. Optional `experiment.py` arguments can follow them.
+4. Select a GPU resource. Seeds run sequentially, each with its own archive in `training-storage`. The existing evaluation script reads those archives.
 
 The wrapper links the dataset to the `data/` path expected by `experiment.py`, runs training, archives the checkpoint and log, and waits five minutes for SWITCHdrive upload. It does not download datasets. For a short test, append `"--max_iters", "1", "--num_steps_per_iter", "20", "--num_eval_episodes", "1"` to the command array.
+
+Outside this Job wrapper, `experiment.py` also accepts `--seeds 42 43 44` directly. It trains them sequentially and saves three distinct checkpoint files in the current `checkpoints/` directory.

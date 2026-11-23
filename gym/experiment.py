@@ -307,6 +307,9 @@ def experiment(
     checkpoint_path = f"checkpoints/{env_name}_{dataset}_K{K}_seed{seed}.pt"
     torch.save(trainer.model.state_dict(), checkpoint_path)
     print(f"Saved checkpoint: {checkpoint_path}")
+    env.close()
+    if log_to_wandb:
+        wandb.finish()
 
 
 if __name__ == '__main__':
@@ -316,6 +319,7 @@ if __name__ == '__main__':
     parser.add_argument('--mode', type=str, default='normal')  # normal for standard setting, delayed for sparse
     parser.add_argument('--K', type=int, default=20)
     parser.add_argument('--seed', type=int, default=42) # adding an argument for launching with different seeds
+    parser.add_argument('--seeds', type=int, nargs='+', help='Train one model for each seed')
     parser.add_argument('--pct_traj', type=float, default=1.)
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--model_type', type=str, default='dt')  # dt for decision transformer, bc for behavior cloning
@@ -333,6 +337,11 @@ if __name__ == '__main__':
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--log_to_wandb', '-w', type=bool, default=False)
     
-    args = parser.parse_args()
-
-    experiment('gym-experiment', variant=vars(args))
+    args = vars(parser.parse_args())
+    seeds = args.pop('seeds') or [args['seed']]
+    if len(seeds) != len(set(seeds)):
+        parser.error('Seeds must be unique')
+    for seed in seeds:
+        args['seed'] = seed
+        print(f'Training seed {seed}', flush=True)
+        experiment('gym-experiment', variant=args)
