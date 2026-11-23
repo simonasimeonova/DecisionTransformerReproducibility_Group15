@@ -50,7 +50,10 @@ COPY docker/prepare_ant.py /opt/decision-transformer/prepare_ant.py
 COPY docker/train-ant.sh /usr/local/bin/train-ant
 COPY docker/train-ant-persistent.sh /usr/local/bin/train-ant-persistent
 COPY docker/smoke.py /opt/decision-transformer/smoke.py
+COPY docker/train-ant-k20.sh /usr/local/bin/train-ant-k20
+COPY docker/train-ant-k20-persistent.sh /usr/local/bin/train-ant-k20-persistent
 RUN chmod 755 /usr/local/bin/train-ant /usr/local/bin/train-ant-persistent \
+  /usr/local/bin/train-ant-k20 /usr/local/bin/train-ant-k20-persistent \
     && python -m pip check \
     && python /opt/decision-transformer/smoke.py \
     && chmod -R a+rwX /usr/local/lib/python3.8/site-packages/mujoco_py/generated
