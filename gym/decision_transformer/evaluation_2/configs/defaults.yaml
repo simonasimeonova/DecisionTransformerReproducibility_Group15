@@ -1,6 +1,5 @@
-# Fill in evaluation episode seeds before running.
 evaluation:
-  episode_seeds: []
+  episode_seeds: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]
   max_episode_steps: 1000
   device: cpu
 
