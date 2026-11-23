@@ -11,6 +11,15 @@ if [ ! -f "$repo_dir/gym/decision_transformer/evaluation_2/run.py" ]; then
     exit 1
 fi
 
+for training_archive in "$repo_dir"/training-storage/*_K*_seed*.tar.gz; do
+    [ -f "$training_archive" ] || continue
+    run_group="${training_archive##*/}"
+    run_group="${run_group#*-}"
+    run_group="${run_group%%_seed*}"
+    mkdir -p "$repo_dir/results/$run_group"
+    tar -xzf "$training_archive" -C "$repo_dir/results/$run_group" --strip-components=1
+done
+
 if [ -f "$archive" ]; then
     tar -xzf "$archive" -C "$repo_dir"
 fi
