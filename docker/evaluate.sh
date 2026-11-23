@@ -11,6 +11,15 @@ if [ ! -f "$repo_dir/gym/decision_transformer/evaluation_2/run.py" ]; then
     exit 1
 fi
 
+/usr/local/bin/python - "$repo_dir/training-storage" <<'PY'
+import os
+import sys
+from pathlib import Path
+path = Path(sys.argv[1]).resolve()
+if not os.path.ismount(path):
+    raise SystemExit("Connector is not mounted: " + str(path))
+PY
+
 for training_archive in "$repo_dir"/training-storage/*_K*_seed*.tar.gz; do
     [ -f "$training_archive" ] || continue
     run_group="${training_archive##*/}"
@@ -34,6 +43,9 @@ status=0
 if [ -d "$output_dir" ]; then
     tar -czf "$repo_dir/evaluation-results.tar.gz" -C "$repo_dir" results/evaluation
     cp "$repo_dir/evaluation-results.tar.gz" "$archive"
-    echo "Results available in $archive"
+    cmp "$repo_dir/evaluation-results.tar.gz" "$archive"
+    sync
+    echo "Archive copied to $archive; waiting 5 minutes for SWITCHdrive upload."
+    sleep 300
 fi
 exit "$status"
