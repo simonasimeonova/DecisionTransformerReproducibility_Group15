@@ -18,6 +18,15 @@ for seed in "${seeds[@]}"; do
     seen="$seen $seed"
 done
 
+repo_dir=$(cd "$(dirname "$0")/.." && pwd)
+if [ -f "$repo_dir/gym/experiment.py" ]; then
+    experiment_py="$repo_dir/gym/experiment.py"
+    source_commit=$(git -C "$repo_dir" rev-parse HEAD)
+else
+    experiment_py=/opt/decision-transformer/gym/experiment.py
+    source_commit=$(cat /opt/source-commit.txt)
+fi
+
 storage=${DT_STORAGE_DIR:-/home/renku/work/DecisionTransformerReproducibility_Group15/training-storage}
 dataset_file="$storage/datasets/$env_name-$dataset-v2.pkl"
 [ -f "$dataset_file" ] || { echo "Missing dataset: $dataset_file" >&2; exit 1; }
@@ -30,9 +39,9 @@ for seed in "${seeds[@]}"; do
     ln -s "$storage/datasets" "$run_dir/data"
     cd "$run_dir"
     printf '%s\n' "env=$env_name dataset=$dataset K=$K seed=$seed extra_args=$*" > arguments.txt
-    cp /opt/source-commit.txt .
+    printf '%s\n' "$source_commit" > source-commit.txt
 
-    python -u /opt/decision-transformer/gym/experiment.py \
+    python -u "$experiment_py" \
         --env "$env_name" --dataset "$dataset" --K "$K" --seed "$seed" \
         --device cuda "$@" 2>&1 | tee train.log || status=$?
 
