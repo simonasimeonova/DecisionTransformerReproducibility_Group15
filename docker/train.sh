@@ -21,7 +21,7 @@ done
 repo_dir=$(cd "$(dirname "$0")/.." && pwd)
 if [ -f "$repo_dir/gym/experiment.py" ]; then
     experiment_py="$repo_dir/gym/experiment.py"
-    source_commit=$(git -C "$repo_dir" rev-parse HEAD)
+    source_commit=${DT_SOURCE_COMMIT:-unknown}
 else
     experiment_py=/opt/decision-transformer/gym/experiment.py
     source_commit=$(cat /opt/source-commit.txt)

@@ -1,11 +1,11 @@
 # Training on Renku
 
-The existing training image supplies the dependencies. A Job can check out
+The existing training image supplies the dependencies. A Job can download
 `odei/simple-training` and run this branch's `docker/train.sh` without rebuilding
 the image. The script then uses this branch's `gym/experiment.py`.
 
 1. Ensure the project data connector is mounted at `DecisionTransformerReproducibility_Group15/training-storage`, with `.pkl` files in its `datasets/` folder.
-2. In the Job command, switch its repository checkout to `odei/simple-training`, then run:
+2. In the Job command, download the branch archive into the repository folder, then run:
 
    ```bash
    bash docker/train.sh ant medium-replay 20 42
