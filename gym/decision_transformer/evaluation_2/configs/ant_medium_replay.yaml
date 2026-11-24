@@ -1,0 +1,44 @@
+experiment_id: ant_medium_replay
+environment: ant
+env_id: Ant-v3  # Matches the current training code; do not change only for evaluation.
+dataset: medium-replay-v2
+dataset_path: ../../../../training-storage/datasets/ant-medium-replay-v2.pkl
+
+# K=1 runs from main. K=20 paths will be filled when matching runs are available.
+# Training runs are grouped under results/<environment>_K<K>/.
+# The * matches the timestamped run folder; each path must match exactly one file.
+checkpoints:
+  k1_seed42:
+    path: ../../../../results/ant_K1/ant_K1_seed42_*/checkpoints/ant_medium-replay_K1_seed42.pt
+    K: 1
+    training_seed: 42
+  k1_seed43:
+    path: ../../../../results/ant_K1/ant_K1_seed43_*/checkpoints/ant_medium-replay_K1_seed43.pt
+    K: 1
+    training_seed: 43
+  k1_seed44:
+    path: ../../../../results/ant_K1/ant_K1_seed44_*/checkpoints/ant_medium-replay_K1_seed44.pt
+    K: 1
+    training_seed: 44
+  k20_seed42:
+    path: ../../../../results/ant_K20/ant_K20_seed42_*/checkpoints/ant_medium-replay_K20_seed42.pt
+    K: 20
+    training_seed: 42
+  k20_seed43:
+    path: ../../../../results/ant_K20/ant_K20_seed43_*/checkpoints/ant_medium-replay_K20_seed43.pt
+    K: 20
+    training_seed: 43
+  k20_seed44:
+    path: ../../../../results/ant_K20/ant_K20_seed44_*/checkpoints/ant_medium-replay_K20_seed44.pt
+    K: 20
+    training_seed: 44
+
+return_conditioning:
+  enabled: true
+  checkpoints: [k20_seed42, k20_seed43, k20_seed44]
+  targets: [0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000]
+
+context_comparison:
+  enabled: true
+  checkpoints: [k1_seed42, k1_seed43, k1_seed44, k20_seed42, k20_seed43, k20_seed44]
+  targets: [2700]

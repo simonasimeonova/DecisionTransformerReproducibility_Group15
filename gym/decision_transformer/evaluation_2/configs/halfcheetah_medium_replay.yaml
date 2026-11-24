@@ -1,0 +1,43 @@
+experiment_id: halfcheetah_medium_replay
+environment: halfcheetah
+env_id: HalfCheetah-v3  # Matches the current training code; do not change only for evaluation.
+dataset: medium-replay-v2
+dataset_path: ../../../../training-storage/datasets/halfcheetah-medium-replay-v2.pkl
+
+# Training runs are grouped under results/<environment>_K<K>/.
+# The * matches the timestamped run folder; each path must match exactly one file.
+checkpoints:
+  k1_seed42:
+    path: ../../../../results/halfcheetah_K1/halfcheetah_K1_seed42_*/checkpoints/halfcheetah_medium-replay_K1_seed42.pt
+    K: 1
+    training_seed: 42
+  k1_seed43:
+    path: ../../../../results/halfcheetah_K1/halfcheetah_K1_seed43_*/checkpoints/halfcheetah_medium-replay_K1_seed43.pt
+    K: 1
+    training_seed: 43
+  k1_seed44:
+    path: ../../../../results/halfcheetah_K1/halfcheetah_K1_seed44_*/checkpoints/halfcheetah_medium-replay_K1_seed44.pt
+    K: 1
+    training_seed: 44
+  k20_seed42:
+    path: ../../../../results/halfcheetah_K20/halfcheetah_K20_seed42_*/checkpoints/halfcheetah_medium-replay_K20_seed42.pt
+    K: 20
+    training_seed: 42
+  k20_seed43:
+    path: ../../../../results/halfcheetah_K20/halfcheetah_K20_seed43_*/checkpoints/halfcheetah_medium-replay_K20_seed43.pt
+    K: 20
+    training_seed: 43
+  k20_seed44:
+    path: ../../../../results/halfcheetah_K20/halfcheetah_K20_seed44_*/checkpoints/halfcheetah_medium-replay_K20_seed44.pt
+    K: 20
+    training_seed: 44
+
+return_conditioning:
+  enabled: true
+  checkpoints: [k20_seed42, k20_seed43, k20_seed44]
+  targets: [0, 1000, 2000, 3000, 4000, 5000, 6000]
+
+context_comparison:
+  enabled: true
+  checkpoints: [k1_seed42, k1_seed43, k1_seed44, k20_seed42, k20_seed43, k20_seed44]
+  targets: [4600]

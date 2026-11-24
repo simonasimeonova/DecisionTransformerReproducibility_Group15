@@ -8,12 +8,18 @@ import argparse
 import pickle
 import random
 import sys
-
 from decision_transformer.evaluation.evaluate_episodes import evaluate_episode, evaluate_episode_rtg
 from decision_transformer.models.decision_transformer import DecisionTransformer
 from decision_transformer.models.mlp_bc import MLPBCModel
 from decision_transformer.training.act_trainer import ActTrainer
 from decision_transformer.training.seq_trainer import SequenceTrainer
+
+
+class NumPyUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module.startswith('numpy._core'):
+            module = module.replace('numpy._core', 'numpy.core', 1)
+        return super().find_class(module, name)
 
 
 def discount_cumsum(x, gamma):
@@ -85,7 +91,7 @@ def experiment(
     # load dataset
     dataset_path = f'data/{env_name}-{dataset}-v2.pkl'
     with open(dataset_path, 'rb') as f:
-        trajectories = pickle.load(f)
+        trajectories = NumPyUnpickler(f).load()
 
     # save all path information into separate lists
     mode = variant.get('mode', 'normal')
@@ -301,6 +307,9 @@ def experiment(
     checkpoint_path = f"checkpoints/{env_name}_{dataset}_K{K}_seed{seed}.pt"
     torch.save(trainer.model.state_dict(), checkpoint_path)
     print(f"Saved checkpoint: {checkpoint_path}")
+    env.close()
+    if log_to_wandb:
+        wandb.finish()
 
 
 if __name__ == '__main__':
@@ -310,6 +319,7 @@ if __name__ == '__main__':
     parser.add_argument('--mode', type=str, default='normal')  # normal for standard setting, delayed for sparse
     parser.add_argument('--K', type=int, default=20)
     parser.add_argument('--seed', type=int, default=42) # adding an argument for launching with different seeds
+    parser.add_argument('--seeds', type=int, nargs='+', help='Train one model for each seed')
     parser.add_argument('--pct_traj', type=float, default=1.)
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--model_type', type=str, default='dt')  # dt for decision transformer, bc for behavior cloning
@@ -327,6 +337,11 @@ if __name__ == '__main__':
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--log_to_wandb', '-w', type=bool, default=False)
     
-    args = parser.parse_args()
-
-    experiment('gym-experiment', variant=vars(args))
+    args = vars(parser.parse_args())
+    seeds = args.pop('seeds') or [args['seed']]
+    if len(seeds) != len(set(seeds)):
+        parser.error('Seeds must be unique')
+    for seed in seeds:
+        args['seed'] = seed
+        print(f'Training seed {seed}', flush=True)
+        experiment('gym-experiment', variant=args)
